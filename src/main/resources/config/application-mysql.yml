@@ -1,7 +1,7 @@
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://arara:3306/sample?rewriteBatchedStatements=true
+        url: jdbc:mysql://localhost:3306/SAMPLE?rewriteBatchedStatements=true
         username: dbuser
         password: dbuser
         max-wait: 1000

@@ -1,0 +1,6 @@
+2016-05-31 17:51:15,401 [main] INFO  b.c.c.s.d.s.application.Application - Starting Application on douglas with PID 19339 (started by douglas in /home/douglas/projects/workspace_cinq/spring-jpa-jersey)
+2016-05-31 17:51:15,418 [main] INFO  b.c.c.s.d.s.application.Application - The following profiles are active: mysql
+2016-05-31 17:51:16,152 [main] WARN  o.s.c.i.s.PathMatchingResourcePatternResolver - Skipping [/home/douglas/projects/workspace_cinq/spring-jpa-jersey/target/spring-jpa-jersey.war] because it does not denote a directory
+2016-05-31 17:51:30,020 [main] WARN  o.a.tomcat.jdbc.pool.ConnectionPool - maxIdle is larger than maxActive, setting maxIdle to: 50
+2016-05-31 17:51:32,246 [main] INFO  b.c.c.s.d.s.application.Application - Started Application in 17.56 seconds (JVM running for 18.497)
+2016-05-31 17:52:10,672 [http-nio-8090-exec-1] INFO  b.c.c.s.d.resource.SampleResource - Retrieving cities for Br
