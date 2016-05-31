@@ -1,6 +1,5 @@
 package br.com.cinq.spring.data.resource;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -15,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.exception.RestServiceException;
+import br.com.cinq.spring.data.sample.service.CityService;
 
 /**
  * Greet Service
@@ -23,14 +25,27 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Path("/")
 public class SampleResource {
-    Logger logger = LoggerFactory.getLogger(SampleResource.class);
+	Logger logger = LoggerFactory.getLogger(SampleResource.class);
 
-    @Path("/cities")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findCities(@QueryParam("country") String name) {
-        logger.info("Retrieving cities for {}", name);
+	@Autowired
+	private CityService cityService; //domain's service
 
-        return Response.ok().entity("Not implemented").build();
-    }
+	@Path("/cities")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response findCities(@QueryParam("country") String countryName) {
+		try {
+			logger.info("Retrieving cities for {}", countryName);
+
+			if (countryName == null)
+				throw new RestServiceException("Country name is requested.");
+
+			List<City> cities = cityService.getCities(countryName);
+			return Response.ok().entity(cities).build();
+
+		} catch (RestServiceException exception) {
+			logger.error("Bad request to the server: {}", exception.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(exception.getMessage()).build();
+		}
+	}
 }

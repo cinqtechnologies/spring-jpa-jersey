@@ -18,12 +18,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableAutoConfiguration
 public class Application extends SpringBootServletInitializer {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		application.profiles("mysql");
+		return application.sources(Application.class);
+	}
 
-    public static void main(String[] args) {
-        new Application().configure(new SpringApplicationBuilder(Application.class)).run(args);
-    }
+	public static void main(String[] args) {
+		new Application().configure(new SpringApplicationBuilder(Application.class)).run(args);
+	}
 }

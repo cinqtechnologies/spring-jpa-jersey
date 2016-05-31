@@ -13,9 +13,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.cinq.spring.data.sample.application.Application;
+import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.entity.Country;
 //import br.com.cinq.spring.data.sample.entity.City;
 //import br.com.cinq.spring.data.sample.entity.Country;
 //import br.com.cinq.spring.data.sample.repository.CityRepository;
+import br.com.cinq.spring.data.sample.repository.CityRepository;
 
 /**
  * Eye candy: implements a sample in using JpaRespositories
@@ -27,21 +30,20 @@ import br.com.cinq.spring.data.sample.application.Application;
 @ActiveProfiles("unit")
 public class CityRepositoryTest {
 
-//    @Autowired
-//    private CityRepository dao;
+	@Autowired
+	private CityRepository dao;
 
-    @Test
-    public void testQueryPerson() {
+	@Test
+	public void testQueryPerson() {
 
-//        Assert.assertNotNull(dao);
-        
-//        Assert.assertTrue(dao.count()>0);
+		Assert.assertNotNull(dao);
 
-//        Country country = new Country();
-//        country.setId(3); // Should be France
+		Assert.assertTrue(dao.count() > 0);
 
-//        List<City> list = dao.findByCountry(country);
+		Country country = new Country();
+		country.setId(3); // Should be France
+		List<City> list = dao.findByCountry(country);
 
-//        Assert.assertEquals(2, list.size());
-    }
+		Assert.assertEquals(2, list.size());
+	}
 }

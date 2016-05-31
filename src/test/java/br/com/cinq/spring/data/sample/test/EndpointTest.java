@@ -1,5 +1,7 @@
 package br.com.cinq.spring.data.sample.test;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.cinq.spring.data.sample.application.Application;
-//import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.entity.City;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -30,37 +32,40 @@ import br.com.cinq.spring.data.sample.application.Application;
 @IntegrationTest("server.port=9000")
 @ActiveProfiles("unit")
 public class EndpointTest {
-    Logger logger = LoggerFactory.getLogger(EndpointTest.class);
+	Logger logger = LoggerFactory.getLogger(EndpointTest.class);
 
-    private final String localhost = "http://localhost:";
+	private final String localhost = "http://localhost:";
 
-    @Value("${local.server.port}")
-    private int port;
+	@Value("${local.server.port}")
+	private int port;
 
-    private RestTemplate restTemplate = new TestRestTemplate();
+	private RestTemplate restTemplate = new TestRestTemplate();
 
-    @Test
-    public void testGetCities() throws InterruptedException {
-        String country = "France";
+	@Test
+	public void testGetCities() throws InterruptedException {
+		String country = "France";
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/")
-//                .queryParam("country", country);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/")
+				.queryParam("country", country);
 
-//        HttpEntity<?> entity = new HttpEntity<>(headers);
+		HttpEntity<?> entity = new HttpEntity<>(headers);
 
-//        ResponseEntity<City[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
-//                entity, City[].class);
+		ResponseEntity<City[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+				entity, City[].class);
 
-//        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+		
+		
+		System.out.println(this.localhost + this.port + "/rest/cities/" );
+		Thread.sleep(2000L);
 
-//        Thread.sleep(2000L);
+		City[] cities = response.getBody();
+		System.out.println(Arrays.asList(cities));
 
-//        City[] cities = response.getBody();
+		Assert.assertEquals(2, cities.length);
 
-//        Assert.assertEquals(2, cities.length);
-
-    }
+	}
 }
