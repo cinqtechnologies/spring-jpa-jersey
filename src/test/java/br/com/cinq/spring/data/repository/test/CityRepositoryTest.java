@@ -57,6 +57,6 @@ public class CityRepositoryTest {
 
         List<City> list = dao.findByCountryName(country);
 
-        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(3, list.size());
     }
 }
