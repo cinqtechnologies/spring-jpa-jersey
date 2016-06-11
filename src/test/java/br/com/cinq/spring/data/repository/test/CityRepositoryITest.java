@@ -2,6 +2,9 @@ package br.com.cinq.spring.data.repository.test;
 
 import java.util.List;
 
+import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.entity.Country;
+import br.com.cinq.spring.data.sample.repository.CityRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,23 +28,23 @@ import br.com.cinq.spring.data.sample.application.Application;
 @WebIntegrationTest(randomPort = true)
 @IntegrationTest("server.port=9000")
 @ActiveProfiles("unit")
-public class CityRepositoryTest {
+public class CityRepositoryITest {
 
-//    @Autowired
-//    private CityRepository dao;
+    @Autowired
+    private CityRepository dao;
 
     @Test
     public void testQueryPerson() {
 
-//        Assert.assertNotNull(dao);
+        Assert.assertNotNull(dao);
         
-//        Assert.assertTrue(dao.count()>0);
+        Assert.assertTrue(dao.count()>0);
 
-//        Country country = new Country();
-//        country.setId(3); // Should be France
+        Country country = new Country();
+        country.setId(3l); // Should be France
 
-//        List<City> list = dao.findByCountry(country);
+        List<City> list = dao.findByCountry(country);
 
-//        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(2, list.size());
     }
 }
