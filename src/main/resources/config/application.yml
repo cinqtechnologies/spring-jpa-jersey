@@ -1,6 +1,8 @@
 server:
     port: 8090
-
+    error:  
+        whitelabel:
+            enabled: false
 spring:
     jersey:
         type: filter
@@ -16,3 +18,5 @@ spring:
              hibernate.cache.use_query_cache: false
              hibernate.generate_statistics: false
              hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+   
+        
