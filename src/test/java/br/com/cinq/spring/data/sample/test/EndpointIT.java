@@ -20,11 +20,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.cinq.spring.data.sample.application.Application;
 import br.com.cinq.spring.data.sample.entity.City;
 
+/**
+ * @author luizlucasi
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes =  Application.class, webEnvironment = 
 SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EndpointTest {
-    Logger logger = LoggerFactory.getLogger(EndpointTest.class);
+public class EndpointIT {
+    Logger logger = LoggerFactory.getLogger(EndpointIT.class);
 
     private final String localhost = "http://localhost:";
 
@@ -34,31 +38,52 @@ public class EndpointTest {
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
     
+  
+    
     @Test
-    public void testGetCities() throws InterruptedException {
-        String country = "France";
+    public void testGetCuritibaCity() throws InterruptedException {
+      
 
           HttpHeaders headers = new HttpHeaders();
           headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 
-         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/")
-                .queryParam("country", country);
+         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/82");
+                
 
          HttpEntity<?> entity = new HttpEntity<>(headers);
 
-         ResponseEntity<City[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
-                 entity, City[].class);
+         ResponseEntity<City> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+                 entity, City.class);
 
          Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 
          Thread.sleep(2000L);
 
-         City[] cities = response.getBody();
+         City city = response.getBody();
 
-         Assert.assertEquals(2, cities.length);
+         Assert.assertEquals("Curitiba", city.getName());
 
     }
     
-   
+    @Test
+    public void testShouldNotReturnCity() throws InterruptedException {
+      
+
+          HttpHeaders headers = new HttpHeaders();
+          headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+
+         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/666");
+                
+
+         HttpEntity<?> entity = new HttpEntity<>(headers);
+
+         ResponseEntity<City> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+                 entity, City.class);
+
+         Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+         
+
+    }
     
 }
