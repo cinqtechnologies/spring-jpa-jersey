@@ -24,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.cinq.spring.data.sample.application.Application;
 //import br.com.cinq.spring.data.sample.entity.City;
 import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.resource.CityCreationRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -62,6 +63,27 @@ public class CityResourceTest {
         City[] cities = response.getBody();
 
         Assert.assertEquals(2, cities.length);
+
+    }
+    
+    @Test
+    public void testCreateCity() throws InterruptedException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/");
+        
+        CityCreationRequest c = new CityCreationRequest();
+        c.setCountryName("United States");
+        c.setName("Seattle");
+
+        HttpEntity<?> entity = new HttpEntity<>(c, headers);
+
+        ResponseEntity<String> response = this.restTemplate.postForEntity(builder.build().encode().toUri(), entity, String.class);
+
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
 
     }
 }
