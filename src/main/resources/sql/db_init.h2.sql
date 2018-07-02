@@ -2,6 +2,9 @@ CREATE SCHEMA IF NOT EXISTS `SAMPLE`;
 
 USE `SAMPLE`;
 
+DROP TABLE IF EXISTS `City`;
+DROP TABLE IF EXISTS `Country`;
+
 CREATE TABLE IF NOT EXISTS `Country` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(40),
@@ -19,7 +22,9 @@ CREATE TABLE IF NOT EXISTS `City` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(40),
     `country_id` INT,
-    PRIMARY KEY (`id`))
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`country_id`) 
+	REFERENCES `Country`(`id`))
 ENGINE = InnoDB;
 
 TRUNCATE TABLE `City`;
