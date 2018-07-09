@@ -39,13 +39,7 @@ public class SampleResource {
 		
 		List<City> cities = new ArrayList<City>();
 		
-		for (Country country : countries) {
-			List result = cityDao.findCityByCountry(country);
-			for(int i = 0; i < result.size(); i++) {
-				Object[] obj = (Object[]) result.get(i);
-				cities.add((City) obj[0]);
-			}
-		}
+		countries.forEach(country -> cities.addAll(cityDao.findCityByCountry(country)));
 		
 		log.info("SampleResource getCities --- End" + cities);
 		

@@ -23,7 +23,7 @@ public class City implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Country
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Country country;
 
 	public City() {

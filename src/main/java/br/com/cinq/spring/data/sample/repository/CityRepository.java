@@ -14,10 +14,9 @@ import br.com.cinq.spring.data.sample.entity.Country;
 public interface CityRepository extends CrudRepository<City, Long> {
 
 	List<City> findByCountry(Country country);
-	
-	@Query("SELECT ct, co FROM City ct "
+
+	@Query("SELECT ct FROM City ct "
 			+ "INNER JOIN ct.country co ON co.id = ct.country.id "
 			+ "WHERE ct.country = :cy")
     List<City> findCityByCountry(@Param("cy") Country country);
-	
 }
