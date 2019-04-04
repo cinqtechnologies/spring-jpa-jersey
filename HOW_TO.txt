@@ -1,0 +1,26 @@
+Test Coverage according to JaCoCo plugin: 96% 
+
+To create a new country
+POST to localhost:8090/rest/country
+Json Body:
+{
+	"name": "Germany"
+}
+
+To create a new city on country Brazil (id=1):
+
+POST to localhost:8090/rest/country/1/city 
+Json Body:
+{
+	"name": "Pindamonhangaba"
+}
+
+To create a new city on country United States (id=2):
+
+POST to localhost:8090/rest/country/2/city 
+Json Body:
+{
+	"name": "Washington"
+}
+
+
