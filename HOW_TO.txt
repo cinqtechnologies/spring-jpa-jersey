@@ -1,4 +1,4 @@
-Test Coverage according to JaCoCo plugin: 89% 
+Test Coverage according to JaCoCo plugin: 96% 
 
 To create a new country
 POST to localhost:8090/rest/country
