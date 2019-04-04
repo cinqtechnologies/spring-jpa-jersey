@@ -6,10 +6,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,16 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.cinq.spring.data.sample.application.Application;
-//import br.com.cinq.spring.data.sample.entity.City;
+import br.com.cinq.spring.data.sample.application.model.City;
+import br.com.cinq.spring.data.sample.application.model.Country;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest(randomPort = true)
-@IntegrationTest("server.port=9000")
+@SpringBootTest(classes = Application.class, webEnvironment=WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("unit")
 public class EndpointTest {
     Logger logger = LoggerFactory.getLogger(EndpointTest.class);
@@ -37,30 +34,122 @@ public class EndpointTest {
     @Value("${local.server.port}")
     private int port;
 
-    private RestTemplate restTemplate = new TestRestTemplate();
+    private TestRestTemplate restTemplate = new TestRestTemplate();
+    
+    @Test
+    public void testGetCountries() throws InterruptedException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/countries/");
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Country[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+                entity, Country[].class);
+
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Thread.sleep(2000L);
+
+        Country[] cities = response.getBody();
+
+        Assert.assertTrue(cities.length > 0);
+    }
 
     @Test
     public void testGetCities() throws InterruptedException {
         String country = "France";
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 
-//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/")
-//                .queryParam("country", country);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.localhost + this.port + "/rest/cities/")
+                .queryParam("country", country);
 
-//        HttpEntity<?> entity = new HttpEntity<>(headers);
+        HttpEntity<?> entity = new HttpEntity<>(headers);
 
-//        ResponseEntity<City[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
-//                entity, City[].class);
+        ResponseEntity<City[]> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+                entity, City[].class);
 
-//        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-//        Thread.sleep(2000L);
+        Thread.sleep(2000L);
 
-//        City[] cities = response.getBody();
+        City[] cities = response.getBody();
 
-//        Assert.assertEquals(2, cities.length);
+        Assert.assertEquals(2, cities.length);
 
     }
+    
+    @Test
+    public void testCreateCity() throws InterruptedException {
+    	City city = new City();
+    	city.setName("Blumenau");
+    	
+    	Integer countryId = 1; //Brazil
+ 
+        String targetURL = this.localhost + this.port + "/rest/country/" + countryId + "/city";
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(targetURL);
+
+        HttpEntity<City> entity = new HttpEntity<>(city);
+
+        ResponseEntity<City> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST,
+                entity, City.class);
+
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Thread.sleep(2000L);
+
+        City newCity = response.getBody();
+
+        Assert.assertEquals("Blumenau", newCity.getName());
+
+    }
+    
+    @Test
+    public void testCreateCityInvalidCountry() throws InterruptedException {
+    	City city = new City();
+    	city.setName("Frankfurt");
+    	
+    	Integer countryId = 463252; //Id inexistente
+ 
+        String targetURL = this.localhost + this.port + "/rest/country/" + countryId + "/city";
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(targetURL);
+
+        HttpEntity<City> entity = new HttpEntity<>(city);
+
+        ResponseEntity<City> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST,
+                entity, City.class);
+
+        Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+    }
+    
+    @Test
+    public void testCreateCountry() throws InterruptedException {
+    	Country country = new Country();
+    	country.setName("Germany");
+    	
+        String targetURL = this.localhost + this.port + "/rest/country";
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(targetURL);
+
+        HttpEntity<Country> entity = new HttpEntity<>(country);
+
+        ResponseEntity<Country> response = this.restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.POST,
+                entity, Country.class);
+
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Thread.sleep(2000L);
+
+        Country newCountry = response.getBody();
+
+        Assert.assertEquals("Germany", newCountry.getName());
+
+    }
+    
 }
