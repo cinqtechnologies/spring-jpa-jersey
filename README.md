@@ -1,16 +1,16 @@
-# Skills in Spring, Data manipulation and JAX RS
-Here you will find a scaffold of a project that aims to expose a REST service to list cities.
-You need to upgrade the project to the newest versions and implement this service using any necessary means.
+# Skills in Spring, Data manipulation and REST API
+This is a test to check your skills in Java, Spring Boot and REST services. 
+Using your preferred tools, create an application with the following demands:
 
-- Java (preferably Java 8 and Functional programming as much as possible)
-- RESTFull service
-- Data manipulation layer
-- Spring-boot (upgrade to the latest version)
-- Maven
+- Expose a REST service to list cities - there are database scripts included.
+- Java (preferably Java 8 or greater and Functional programming as much as possible)
+- JPA
+- Spring-boot with a self-contained application (Container included)
+
 
 # Database
 The actual implementation uses H2 in memory as the database. You will find also the scripts 
-for MySQL. The scripts insert a few entries in each table.
+for MySQL. The scripts insert a few entries in each table. We recommend using spring-initialzr to scaffold the application.
 
 # Proposed exercise
 The candidate must:
@@ -18,24 +18,19 @@ The candidate must:
 - Create the Data manipulation layer. Feel free to use structure or framework you like (JPA, JDBC, Spring Data, etc).
 - Create a GET REST service to retrieve the list of cities in the database, and return them as a JSON object.
 - The service may receive the query param "country" as a String, to restrict the search. The parameter may be part of the Country name
+
    http://server:port/rest/cities[?country=name]
 
-- Create an operation to load data into the database (Here you're free to be creative. You can load data from a simple CSV, a spreadsheet, a rest service, etc...)
-
-Feel free to modify the files included, upgrade frameworks, add or remove packages, in every aspect you want. Just check the note regarding JUnit tests below.
+Optional challenges:
+- Create an operation to load data into the database (Here you are free to be creative. You can load data from a simple CSV, a spreadsheet, a rest service, etc)
+- Use Gradle
 
 # Expected results
 After the implementation, the application should run after the following command line:
 
 	java -jar target/spring-jpa-jersey.jar
     
-or 
-
-    mvn spring-boot:run
     
-or deploy on Tomcat, or Jetty or an Application Server, as long as you include instructions for the deploy.
-
-
 Then, open a browser and type :
 
     http://localhost:8090/rest/cities?country=Uni
@@ -73,12 +68,9 @@ It must return, at least the following (ids may vary) :
 
 # Unit tests
 
-Included you will find JUnit tests, with commented lines. Those tests must run after the lines
-are uncommented. 
+Create unit tests with targeting code coverage
 
-## Challenge
+## Challenges for tests
 
-Post the percentage of line covered by tests of your application.
-
-
-** PLUS: It would be great if you can come up with unit and integration tests separately in their apropriate building phases.
+- Include the percentage of line covered by tests of your application - Use Jacoco plugin.
+- Include an integration test.
